@@ -1,15 +1,17 @@
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
         int l = 1, r = maxElement(piles);
+        int ans = -1;
         while (l <= r) {
             int mid = (l + r) / 2;
             int time = totalTime(piles, mid);
-            if (time <= h)
+            if (time <= h) {
+                ans = mid;
                 r = mid - 1;
-            else
+            } else
                 l = mid + 1;
         }
-        return l;
+        return ans;
     }
 
     public int maxElement(int[] piles) {
@@ -21,10 +23,10 @@ class Solution {
     }
 
     public int totalTime(int[] piles, int time) {
-    int totalTime = 0;
-    for (int ele: piles) {
-    totalTime += Math.ceil((double) ele / (double) time);
-    }
-    return totalTime;
+        int totalTime = 0;
+        for (int ele : piles) {
+            totalTime += Math.ceil((double) ele / (double) time);
+        }
+        return totalTime;
     }
 }
