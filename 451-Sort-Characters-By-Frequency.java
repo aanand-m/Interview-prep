@@ -1,25 +1,38 @@
-import java.util.*;
-
 class Solution {
+    StringBuilder ans = new StringBuilder();
     public String frequencySort(String s) {
+        NavigableMap<Integer, List <Character>> freq = new TreeMap<>();
         Map<Character, Integer> charCount = new HashMap<>();
+
         for (char c : s.toCharArray()) {
-            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+            charCount.put(c, charCount.getOrDefault(c,0) + 1);
         }
 
-        // Use a PriorityQueue to store characters, ordered by frequency (descending)
-        PriorityQueue<Character> pq = new PriorityQueue<>((a, b) -> charCount.get(b) - charCount.get(a));
-        pq.addAll(charCount.keySet());
+        for(Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+            char letter = entry.getKey();
+            int count = entry.getValue();
 
-        StringBuilder ans = new StringBuilder();
-        while (!pq.isEmpty()) {
-            char c = pq.poll();
-            int count = charCount.get(c);
-            for (int i = 0; i < count; i++) {
-                ans.append(c); // Efficiently append to the end
+            if (!freq.containsKey(count)) {
+                freq.put(count, new ArrayList<>());
+            }
+            freq.get(count).add(letter);
+        }
+
+        for(Map.Entry<Integer,List<Character>> entry : freq.descendingMap().entrySet()) {
+            int count = entry.getKey();
+            List <Character> charList = entry.getValue();
+            for ( char c : charList) {
+                build(count, c);
             }
         }
 
         return ans.toString();
+
+    }
+
+    public void build (int count , char letter) {
+        for (int i =0 ; i<count; i++) {
+            ans.append(letter);
+        }
     }
 }
