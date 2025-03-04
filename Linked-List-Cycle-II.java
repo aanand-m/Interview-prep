@@ -1,23 +1,31 @@
 /**
  * Definition for singly-linked list.
  * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
+ * int val;
+ * ListNode next;
+ * ListNode(int x) {
+ * val = x;
+ * next = null;
+ * }
  * }
  */
 public class Solution {
     public ListNode detectCycle(ListNode head) {
-        Map<ListNode, Integer> mpp= new HashMap<>();
-        ListNode temp = head;
-        while (temp != null) {
-            if (mpp.containsKey(temp)) return temp;
-            else mpp.put(temp, mpp.getOrDefault(temp, 0) + 1);
-            temp = temp.next;
+        if (head == null || head.next == null)
+            return null;
+        ListNode fast = head;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                slow = head;
+                while (fast != slow) {
+                    fast = fast.next;
+                    slow = slow.next;
+                } return slow;
+            }
         }
-        return temp;
+        return null;
     }
 }
